@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Ελληνικών Σειρών</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.8s ease-in-out;
+        }
+        .quiz-container {
+            width: 70%;
+            margin: 50px auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 22px;
+        }
+        button {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 20px;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #d35400;
+        }
+        #restartBtn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz Ελληνικών Σειρών</h1>
+        <p id="question">Ερώτηση</p>
+        <div id="answers"></div>
+        <p id="score">Σκορ: 0</p>
+        <button id="restartBtn" onclick="restartGame()">Επανεκκίνηση</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Ποιος είναι ο 'Βόσκαρης' στις Άγριες Μέλισσες;",
+                answers: ["Δάσκαλος", "Αστυνομικός", "Διευθυντής φυλακών", "Γιατρός"],
+                correct: 2,
+                image: "https://upload.wikimedia.org/wikipedia/commons/a/a7/%CE%92%CF%8C%CF%83%CE%BA%CE%B1%CF%81%CE%B7%CF%82_%CE%92%CF%81%CE%AC%CF%87%CE%BF%CF%82.jpg"
+            },
+            {
+                question: "Ποια είναι η κεντρική οικογένεια στον 'Σασμό';",
+                answers: ["Καπερνάροι", "Σταματάκηδες", "Κουδουνάκηδες", "Δρακάκηδες"],
+                correct: 1,
+                image: "https://www.news247.gr/eidiseis/koinonia/sasmos-teliki-foto.8716715.201.jpg"
+            },
+            {
+                question: "Σε ποια σειρά ανήκει ο χαρακτήρας 'Ελένη Σταμίρη';",
+                answers: ["Το Νησί", "Άγριες Μέλισσες", "Σασμός", "Χαιρέτα μου τον Πλάτανο"],
+                correct: 1,
+                image: "https://www.ertflix.gr/wp-content/uploads/2020/05/agries-melisses.jpg"
+            },
+            {
+                question: "Ποιος είναι ο 'Μανώλης' στο Σασμό;",
+                answers: ["Αστυνομικός", "Ιερέας", "Μάρτυρας φόνου", "Δήμαρχος"],
+                correct: 2,
+                image: "https://img.protothema.gr/660x370/2021/09/01/424e81f9b7a1.jpg"
+            },
+            {
+                question: "Ποια είναι η ατάκα του 'Μηνά' στο Μην Αρχίζεις τη Μουρμούρα;",
+                answers: ["Δεν αντέχω άλλο!", "Και τι έγινε δηλαδή;", "Το είπα, τελείωσε!", "Άντε πάλι τα ίδια;"],
+                correct: 1,
+                image: "https://img.ant1news.gr/4F3D5C76-3C83-4F52-B1DB-F3483A7E3B70.jpeg"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById("question").innerText = q.question;
+            document.getElementById("answers").innerHTML = "";
+            document.body.style.backgroundImage = `url('${q.image}')`;
+
+            q.answers.forEach((answer, index) => {
+                const btn = document.createElement("button");
+                btn.innerText = answer;
+                btn.onclick = () => checkAnswer(index);
+                document.getElementById("answers").appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected) {
+            if (selected === questions[currentQuestion].correct) {
+                score++;
+                alert("Σωστό! ✅");
+            } else {
+                alert("Λάθος! ❌");
+            }
+            currentQuestion++;
+            document.getElementById("score").innerText = `Σκορ: ${score}`;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                document.getElementById("question").innerText = `Τέλος παιχνιδιού! Το σκορ σου είναι: ${score}/${questions.length}`;
+                document.getElementById("answers").innerHTML = "";
+                document.getElementById("restartBtn").style.display = "block";
+            }
+        }
+
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById("score").innerText = `Σκορ: 0`;
+            document.getElementById("restartBtn").style.display = "none";
+            showQuestion();
+        }
+
+        showQuestion(); // Ξεκινάμε!
+    </script>
+</body>
+</html>
